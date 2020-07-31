@@ -11,7 +11,7 @@ import org.mule.runtime.extension.api.annotation.Configuration;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.Sources;
 import org.mule.tooling.extensions.metadata.internal.operation.SimpleOperations;
-import org.mule.tooling.extensions.metadata.internal.source.SimpleSource;
+import org.mule.tooling.extensions.metadata.api.source.SimpleSource;
 
 @Operations({SimpleOperations.class})
 @Sources({SimpleSource.class})
