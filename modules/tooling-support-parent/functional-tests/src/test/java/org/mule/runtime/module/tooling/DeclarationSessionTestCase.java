@@ -26,6 +26,7 @@ import org.mule.runtime.app.declaration.api.ComponentElementDeclaration;
 import org.mule.runtime.app.declaration.api.SourceElementDeclaration;
 import org.mule.runtime.app.declaration.api.fluent.ArtifactDeclarer;
 import org.mule.runtime.module.tooling.api.artifact.DeclarationSession;
+import org.mule.runtime.module.tooling.api.metadata.MetadataTypesContainer;
 import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.test.infrastructure.deployment.AbstractFakeMuleServerTestCase;
 
@@ -168,6 +169,25 @@ public class DeclarationSessionTestCase extends AbstractFakeMuleServerTestCase i
     assertThat(countries, IsCollectionWithSize.hasSize(2));
     assertThat(countries, hasItem(metadataKeyWithId("USA").withDisplayName("United States").withPartName("country")));
     assertThat(countries, hasItem(metadataKeyWithId("ARGENTINA").withDisplayName("ARGENTINA").withPartName("country")));
+  }
+
+  @Test
+  public void allMetadataSource() {
+    SourceElementDeclaration sourceElementDeclaration = sourceDeclaration(CONFIG_NAME, null, "America", "USA", "SFO");
+    MetadataResult<MetadataTypesContainer> containerTypeMetadataResult = session.getMetadataTypes(sourceElementDeclaration);
+    assertThat(containerTypeMetadataResult.isSuccess(), is(true));
+
+    assertThat(containerTypeMetadataResult.get().getOutputMetadata().isPresent(), is(true));
+    assertThat(new MetadataTypeWriter().toString(containerTypeMetadataResult.get().getOutputMetadata().get()),
+            equalTo("%type _:Java = @default(\"value\" : \"America|USA|SFO\") String"));
+
+    assertThat(containerTypeMetadataResult.get().getOutputAttributesMetadata().isPresent(), is(true));
+    assertThat(new MetadataTypeWriter().toString(containerTypeMetadataResult.get().getOutputAttributesMetadata().get()),
+            equalTo("%type _:Java = @typeId(\"value\" : \"org.mule.tooling.extensions.metadata.api.source.StringAttributes\") {\n"
+                    +
+                    "  \"value\"? : @default(\"value\" : \"America|USA|SFO\") String\n" +
+                    "}"));
+
   }
 
   @Test

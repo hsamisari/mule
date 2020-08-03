@@ -17,9 +17,10 @@ import org.mule.runtime.api.metadata.resolving.MetadataResult;
 import org.mule.runtime.api.metadata.resolving.TypeKeysResolver;
 import org.mule.runtime.api.value.ValueResult;
 import org.mule.runtime.app.declaration.api.ComponentElementDeclaration;
+import org.mule.runtime.module.tooling.api.metadata.MetadataTypesContainer;
 
 /**
- * It is in charge or resolving connector's operations and retrieving metadata for all
+ * It is in charge of resolving connector's operations and retrieving metadata for all
  * components related to the same session configuration. The session configuration should be
  * defined by multiple global elements, including Configurations, Connections, etc.
  * <p/>
@@ -71,6 +72,13 @@ public interface DeclarationSession {
   MetadataResult<MetadataType> outputMetadata(ComponentElementDeclaration component);
 
   MetadataResult<MetadataType> outputAttributesMetadata(ComponentElementDeclaration component);
+
+  /**
+   *
+   * @param component
+   * @return
+   */
+  MetadataResult<MetadataTypesContainer> getMetadataTypes(ComponentElementDeclaration component);
 
   /**
    * Stops and disposes all resources used by this {@link DeclarationSession}
