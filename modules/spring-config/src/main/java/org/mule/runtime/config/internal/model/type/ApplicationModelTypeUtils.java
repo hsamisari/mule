@@ -284,6 +284,11 @@ public final class ApplicationModelTypeUtils {
                     }
                   });
                 } else if (isContent(paramModel) || isSimpleMetadataType(paramModel)) {
+                  // MULE-18639: we also verify if this is simple metadata type.
+                  // Otherwise, this parameter will be ignored by the visitor.
+                  // It won't be set as a simple data type on enriching either because
+                  // sometimes the role is not content.
+                  // TODO: verify these conditions. 
                   nestedForId
                       .forEach(childComp -> componentModel
                           .setParameter(paramModel,
